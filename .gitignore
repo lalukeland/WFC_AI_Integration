@@ -3,10 +3,6 @@
 .env.local
 .env.production
 .env.development
-.env.template
-
-# Sensitive data files
-rag_cache.pkl.faiss
 
 # Python cache
 __pycache__/
