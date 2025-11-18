@@ -145,9 +145,13 @@ class Neo4jDataLoader:
 
 def main():
     # Get Neo4j credentials from environment
-    uri = os.environ.get('NEO4J_URI', 'neo4j+s://3f819383.databases.neo4j.io')
-    user = os.environ.get('NEO4J_USERNAME', 'neo4j')
-    password = os.environ.get('NEO4J_PASSWORD', 'PqzE688WcO9IFu--rCkBuusfzgt_PkWjQm4Av22QEU0')
+    uri = os.environ.get('NEO4J_URI')
+    user = os.environ.get('NEO4J_USERNAME') or os.environ.get('NEO4J_USER')
+    password = os.environ.get('NEO4J_PASSWORD')
+    
+    if not all([uri, user, password]):
+        logger.error('Error: NEO4J_URI, NEO4J_USER/NEO4J_USERNAME, and NEO4J_PASSWORD environment variables must be set')
+        sys.exit(1)
     
     logger.info("🚀 Starting Neo4j data import...")
     logger.info(f"   URI: {uri}")

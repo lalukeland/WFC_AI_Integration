@@ -208,10 +208,13 @@ class GraphAgent:
     async def initialize(self):
         """Initialize the graph agent"""
         try:
-            # Get Neo4j credentials from environment or defaults
-            uri = os.environ.get('NEO4J_URI', 'neo4j+s://ef7a8bfd.databases.neo4j.io')
-            user = os.environ.get('NEO4J_USER', 'neo4j')
-            password = os.environ.get('NEO4J_PASSWORD', 'PoPp-QU1qGsWwiVV8SMD7OsIrXidkdC4pFdgnBbJfM4')
+            # Get Neo4j credentials from environment
+            uri = os.environ.get('NEO4J_URI')
+            user = os.environ.get('NEO4J_USER')
+            password = os.environ.get('NEO4J_PASSWORD')
+            
+            if not all([uri, user, password]):
+                raise ValueError('NEO4J_URI, NEO4J_USER, and NEO4J_PASSWORD environment variables must be set')
             
             # Initialize graph tool
             self.graph_tool = ShopfloorGraphTool(uri, user, password)

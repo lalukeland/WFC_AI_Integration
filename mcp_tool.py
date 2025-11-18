@@ -3,9 +3,9 @@
 ShopfloorGraphTool — Minimal Python wrapper for executing operations defined in mcp_tool_contract.json
 
 Usage (CLI):
-  export NEO4J_URI=neo4j+s://62f9b154.databases.neo4j.io
-  export NEO4J_USER=neo4j
-  export NEO4J_PASSWORD=U32P3onr7idgSWbqklVReZQ8BVRH_BWH3_A5Oj83oq0
+  export NEO4J_URI=your_neo4j_uri
+  export NEO4J_USER=your_username
+  export NEO4J_PASSWORD=your_password
   python shopfloor_tool.py call highVibrationMachines '{"threshold": 7.5, "unit": "mm/s"}'
 
 This script expects the Neo4j Python driver to be installed:
@@ -69,9 +69,14 @@ if __name__ == '__main__':
         sys.exit(1)
     op = sys.argv[2]
     inputs = json.loads(sys.argv[3]) if len(sys.argv) > 3 else {}
-    uri = os.environ.get('NEO4J_URI', 'neo4j+s://ef7a8bfd.databases.neo4j.io')
-    user = os.environ.get('NEO4J_USER', 'neo4j')
-    pwd  = os.environ.get('NEO4J_PASSWORD', 'PoPp-QU1qGsWwiVV8SMD7OsIrXidkdC4pFdgnBbJfM4')
+    uri = os.environ.get('NEO4J_URI')
+    user = os.environ.get('NEO4J_USER')
+    pwd  = os.environ.get('NEO4J_PASSWORD')
+    
+    if not all([uri, user, pwd]):
+        print('Error: NEO4J_URI, NEO4J_USER, and NEO4J_PASSWORD environment variables must be set')
+        sys.exit(1)
+    
     tool = ShopfloorGraphTool(uri, user, pwd)
     try:
         out = tool.call(op, inputs)
